@@ -1,0 +1,48 @@
+<project name="escxnat-modules" default="doModules" basedir=".">
+
+	<import file="build.xml" />
+
+	<target name="check-module">
+
+		<property name="sourcepath" value="${project.sourcedir}/${name}" />
+		<available property="comp.exists" file="${sourcepath}/build.xml" />
+
+		<!-- print header -->
+		<echo message="=============================================" />
+		<echo message="=== Build Component: ${name}: ${target}" />
+		<echo message="=============================================" />
+		<echo message=" project root         = ${project.root}" />
+		<echo message=" project dist         = ${project.dist}" />
+		<echo message=" project sourceroot   = ${project.sourcedir}" />
+		<echo message=" component sourcepath = ${sourcepath}" />
+
+	</target>
+
+	<!-- 
+        Build Component
+            name   : Component Name 
+            target : Target component (directory) 
+      -->
+	<target name="build-module" depends="check-module">
+
+		<fail unless="comp.exists" message="*** Component: ${name} at ${sourcepath} is missing or scm checkout went wrong (missing build.xml file ?)" />
+
+		<!-- default target: can be overriden by previous target-->
+		<property name="target" value="dist-install" />
+
+		<ant antfile="build.xml" dir="${sourcepath}" target="${target}">
+		</ant>
+
+	</target>
+
+	<target name="doModules" depends="init">
+
+		<antcall target="build-module">
+			<param name="name" value="nl.esciencecenter.xnattool" />
+			<param name="version" value="" />
+			<param name="scm.path" value=""/>
+		</antcall>
+
+	</target>
+
+</project>

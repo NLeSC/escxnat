@@ -1,0 +1,30 @@
+
+                    The eScience XNAT Toolkit "escXnat" 
+
+          Copyright (C) 2012-2014 The Netherlands eScience Center
+          This software is copyrighted under the Apache 2.0 License. 
+          See LICENSE.txt for the full license text. 
+
+
+Other software:
+===============
+ 
+ This project includes the Netherlands eScience Center "Platinum" libraries. 
+which are Copyright (C) 2012-2014 Netherlands eScience Center. 
+See "notices/LICENSE.nlesc-platinum.txt" for the license information of this 
+library.
+
+ This project includes the Legion of the Bouncy Castle Java cryptography 
+APIs, which are Copyright (C) 2000-2013 The Legion Of The Bouncy Castle. 
+See "notices/LICENSE.bouncycastle.txt" for the licencs information of this 
+library.
+
+ This project includes "dcm4che" libraries. The dcm4che and dcm4chee are 
+licensed under an MPL/GPL/LGPL triple license - similar to Mozilla.  
+This allows use of the files under the terms of any one of the Mozilla 
+Public License version 1.1 (MPL), the GNU General Public License version 2
+or later (GPL), or the GNU Lesser General Public License version 2.1 or later (LGPL).
+The license choosen for this release is the LGPL 2.1 license. 
+See "notices/LICENSE.dcm4che.txt"
+ 
+ 

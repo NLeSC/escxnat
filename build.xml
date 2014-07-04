@@ -1,0 +1,139 @@
+<project name="escxnat" default="dist-install" basedir=".">
+	<description>
+        Project        : escxnat
+        Component      : root build file
+        
+        See project.prop for default properties. 
+        Add custom properties to 'build.prop'
+        
+    </description>
+
+	<!-- Toplevel build is *here* -->
+	<property name="project.root" location="." />
+
+	<!-- toplevel project settings -->
+	<property environment="env" />
+	<property file="build.prop" />
+
+	<!-- read custom build.prop before project.prop -->
+	<property file="${project.root}/project.prop" />
+
+	<!-- Modules -->
+	<import file="modules.xml" />
+
+	<!-- 
+        Target: init 
+      -->
+	<target name="init">
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${project.dist}" />
+		<mkdir dir="${project.dist.lib}" />
+		<mkdir dir="${project.dist.etc}" />
+		<mkdir dir="${project.dist.bin}" />
+		<mkdir dir="${project.dist.doc}" />
+
+		<!-- project defaults -->
+		<property name="project.sourcedir" value="${project.root}" />
+
+		<tstamp>
+			<format property="project.tstamp" pattern="yyyy-MM-dd HH:mm:ss" locale="en" />
+		</tstamp>
+
+		<tstamp>
+			<format property="project.time.number" pattern="yyyyMMddHHmmss" locale="en" />
+		</tstamp>
+
+		<!-- read escxnat property file: -->
+		<property file="${project.sourcedir}/nl.nlesc.xnat.client/etc/escxnat_version.prop" />
+
+		<echo message=" - source version=${escxnat.version}" />
+		<property name="project.version" value="${escxnat.version}" />
+
+	</target>
+
+	<target name="dist" depends="init">
+
+		<property name="project.sourcedir" value="${project.root}" />
+		<property name="target" value="dist" />
+
+		<antcall target="doModules">
+			<param name="target" value="dist" />
+		</antcall>
+
+	</target>
+
+	<target name="post-dist-install">
+
+		<!-- 
+            Prepare the distribution.  
+            Update distribution root.  
+         -->
+
+		<!-- toplevel NOTICE and README files -->
+
+		<copy todir="${project.dist}">
+			<fileset file="${project.root}/NOTICE.txt" />
+			<fileset file="${project.root}/LICENSE.txt" />
+		</copy>
+
+		<copy todir="${project.dist}/notices">
+			<fileset dir="${project.root}/notices" />
+		</copy>
+
+	</target>
+
+	<target name="modules-dist-install" depends="init,post-dist-install">
+
+		<antcall target="doModules">
+			<param name="target" value="dist-install" />
+		</antcall>
+
+	</target>
+
+	<target name="dist-install" depends="modules-dist-install">
+		<!-- project-dist-install local targets -->
+	</target>
+
+	<target name="modules-clean" depends="init">
+
+		<antcall target="doModules">
+			<param name="target" value="clean" />
+		</antcall>
+
+	</target>
+
+	<target name="clean" description="clean" depends="modules-clean">
+		<delete dir="${project.dist}" />
+	</target>
+
+	<target name="dist-zip" depends="dist-install">
+
+		<!-- zippit -->
+		<property name="distro.prefix" value="escxnat" />
+		<property name="distro.zip.prefix" value="escxnat" />
+
+		<!-- derived -->
+		<property name="distro.zip.root" value="${distro.prefix}-${project.version}" />
+		<property name="distro.zip.filename" value="${distro.zip.prefix}-${project.version}" />
+
+		<zip destfile="packs/${distro.zip.filename}.zip">
+
+			<!-- Add all excluding shell scripts and other executables -->
+			<zipfileset dir="${project.dist}" filemode="644" prefix="${distro.zip.filename}" excludes="bin/**,*.sh,escxnat.exe,escxnat_64.exe,escxnat.jar" />
+
+			<!-- Now add 'bin' shell scrips with x permissions ! -->
+			<zipfileset dir="${project.dist}/bin" filemode="755" prefix="${distro.zip.root}/bin" />
+			<!-- Now add root shell scrips with x permissions ! -->
+
+			<!--- selection of scripts from toplevel directory -->
+			<zipfileset dir="${project.dist}/" filemode="755" prefix="${distro.zip.root}" includes="*.sh,escxnat.exe,escxnat_64.exe,escxnat.jar">
+			</zipfileset>
+
+		</zip>
+
+	</target>
+
+</project>
+
+

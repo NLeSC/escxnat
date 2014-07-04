@@ -1,0 +1,9 @@
+/dist
+/packs
+*.pyc
+*.swp
+*.cmake
+*.class
+*~
+*.tmp
+*.log

@@ -1,0 +1,37 @@
+##
+# Default project settings  
+#
+
+##
+# Project Settings
+project.name=escxnat 
+project.vendor=eScienceCenter.nl
+# Toplevel source dir
+project.sourcedir=.
+
+##
+# Project Build Environment 
+# default project structure: 
+project.dist=${project.root}/dist
+# var is used during build to write logs to 
+project.dist.var=${project.dist}/var
+project.dist.lib=${project.dist}/lib
+#3rd party libraries,etc. 
+project.dist.auxlib=${project.dist.lib}/auxlib
+project.dist.etc=${project.dist}/etc
+project.dist.bin=${project.dist}/bin
+project.dist.doc=${project.dist}/doc
+#mark project.prop read!
+project.env.ok=ok; 
+
+#
+platinum.install=${project.root}/../../Platinum/dist
+escxnat.version=1.0.0
+project.version=${escxnat.version}
+
+###
+# Java Compiler options : Java 1.7 
+javac.debug=true
+javac.target=1.7
+javac.source=1.7
+javac.compiler=modern
