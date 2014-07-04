@@ -1,0 +1,36 @@
+#
+# Value Representations. 
+#
+
+AE          16          //Application Name
+AS          4           //Age String: nnnW or nnnM or nnnY
+AT          4           //Attribute Tag gggg,eeee
+CS          16          //Code String
+DA          8           //Date yyyymmdd (check for yyyy.mm.dd also and convert)
+DS          16          //Decimal String may start with + or - and may be padded with l or t space
+DT          26          //Date Time YYYYMMDDHHMMSS.FFFFFF&ZZZZ (&ZZZ is optional & = + or -)
+FL          4           //Single precision floating pt number (float)
+FD          16          //Double precision floating pt number (double)
+IS          12          //Integer encoded as string. may be padded
+LO          64          //Character string. can be padded. cannot contain \ or any control chars except ESC
+LT          10240       //Long Text. Leading spaces are significant. trailing spaces aren't
+OB          -           //single trailing 0x00 to make even number of bytes. Transfer Syntax determines len
+OF          -           //Other Float String. floats
+OW          -           //Other Word String. words
+PN          -           //Person's Name 64byte max per component. 5 components. delimiter = ^
+SH          16          //Short String. may be padded
+SL          4           //signed long integer
+SQ          -           //Sequence of zero or more items
+SS          2           //signed short integer (word)
+ST          1024        //Short Text of chars
+TM          16          //Time hhmmss.frac (or older format: hh:mm:ss.frac)
+UI          64          //Unique Identifier (delimiter = .) 0-9 only, trailing space to make even #
+UL          4           //Unsigned long integer
+UN          -           //unknown
+US          2           //Unsigned short integer (word)
+UT          -           //Unlimited Text. trailing spaces ignored
+
+// Extra
+OX          -           // can be either OB or OW. Actual DicomFiles contain either OB or OW. 
+DL          -           // Delimeter. Special Meta type. 
+

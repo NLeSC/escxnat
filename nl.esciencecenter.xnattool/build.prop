@@ -1,0 +1,26 @@
+###
+# File      : build.prop
+# Component : xnattool
+# 
+# Info: 
+#
+#   build properties. Holds ALL customizable properties 
+#   
+
+comp.artefactId=nlesc-escxnat
+comp.package.prefix=nl.esciencecenter.xnattool
+comp.package.dir=nl/esciencecenter/xnattool
+comp.version=dev-snapshot
+# build structure: 
+comp.src=${comp.root}/src
+comp.testsrc=${comp.root}/testsrc
+comp.build=${comp.root}/build
+comp.build.classes=${comp.build}/classes
+comp.dist=${comp.root}/dist
+comp.lib=${comp.root}/lib
+
+comp.mainclass=nl.esciencecenter.xnattool.bootstrap.startXnatToolMain
+
+# build location for bootstrapper code which is standalone jar!
+comp.build.bootstrap=${comp.build}/bootstrap
+

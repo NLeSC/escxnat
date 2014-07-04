@@ -1,0 +1,377 @@
+<project name="nlesc-escxnat-xnattool" default="dist" xmlns:jacoco="antlib:org.jacoco.ant" basedir=".">
+    <description>
+        Project        : ESCXNAT
+        Component      : Xnat Tool 
+		
+    </description>
+
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+        <classpath path="testlib/jacocoant.jar" />
+    </taskdef>
+
+    <property name="project.root" value=".." />
+    <!-- -->
+    <property file="${project.root}/project.prop" />
+    <property environment="env" />
+    <property name="comp.root" location="." />
+    <property file="build.prop" />
+
+    <!-- Default component structure. Can also be specifed in build.prop.-->
+
+    <!-- Target: init -->
+
+    <target name="init">
+
+        <!-- defaults, if not defined they are defined here -->
+
+        <property name="comp.version" value="dev-snapshot" />
+        <property name="project.version" value="${comp.version}" />
+        <property name="project.vendor" value="${user.name}" />
+
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${comp.build}" />
+        <mkdir dir="${comp.build.classes}" />
+        <mkdir dir="${comp.build.bootstrap}" />
+        <mkdir dir="${comp.dist}" />
+        <mkdir dir="${comp.dist}/lib" />
+
+        <echo message=" - project.dist.lib = ${project.dist.lib}" />
+        <echo message=" - project.version  = ${project.version}" />
+
+        <!-- default platinum location inside this modules -->
+        <property name="platinum.install" value="${comp.lib}/platinum" />
+        <property name="platinum.install.lib" value="${platinum.install}/lib" />
+
+
+    </target>
+
+
+    <target name="config">
+    </target>
+
+    <target name="generate">
+    </target>
+
+    <path id="comp.classpath">
+        <!-- include project libraries-->
+        <fileset dir="${project.dist.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+        <fileset dir="${comp.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+
+        <fileset dir="${platinum.install}/lib">
+            <include name="**/*.jar" />
+        </fileset>
+
+        <!-- add local path settings -->
+
+    </path>
+
+    <path id="test.classpath">
+        <!-- include project libraries-->
+        <fileset dir="${project.dist.lib}">
+            <include name="**/*.jar" />
+        </fileset>
+
+        <!-- <fileset dir="${comp.root}/etcb">
+            <include name="**/*.jar" />
+        </fileset> -->
+
+        <fileset dir="${comp.root}/testlib">
+            <include name="**/*.jar" />
+        </fileset>
+
+        <pathelement location="${comp.build.classes}" />
+        <pathelement location="${comp.testsrc}" />
+        <pathelement location="${comp.root}/etc" />
+
+    </path>
+
+    <!--
+        Target = Compilation 
+    -->
+
+    <target name="build" depends="init" description="compile the source ">
+
+        <javac srcdir="${comp.src}" destdir="${comp.build.classes}" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
+            <classpath refid="comp.classpath" />
+        </javac>
+
+        <!-- Compile jdk1.6 compatible bootstrapper -->
+        <javac srcdir="${comp.src}/${comp.package.dir}/bootstrap" destdir="${comp.build.bootstrap}" compiler="${javac.compiler}" source="1.6" target="1.6" />
+
+    </target>
+
+    <!-- Target: build -->
+    <target name="build-tests" depends="init,build" description="compile the test source ">
+        <!-- Compile the java code from into ${build} -->
+
+        <javac srcdir="${comp.testsrc}" destdir="${comp.build.classes}" compiler="${javac.compiler}" debug="${javac.debug}" source="${javac.source}" target="${javac.target}">
+            <classpath refid="test.classpath" />
+        </javac>
+
+    </target>
+
+    <target name="jar" depends="build">
+
+
+        <!-- Create application JAR file -->
+        <jar jarfile="${comp.dist}/lib/${comp.artefactId}-${project.version}.jar" basedir="${comp.build.classes}">
+            <manifest>
+                <attribute name="Built-By" value="${user.name}" />
+                <attribute name="Main-Class" value="${comp.mainclass}" />
+                <section name="common">
+                    <attribute name="Specification-Title" value="${comp.artefactId}" />
+                    <attribute name="Specification-Version" value="${project.version}" />
+                    <attribute name="Specification-Vendor" value="${project.vendor}" />
+                    <attribute name="Implementation-Title" value="${comp.artefactId}" />
+                    <attribute name="Implementation-Version" value="${comp.version} ${TODAY}" />
+                    <attribute name="Implementation-Vendor" value="${project.vendor}" />
+                </section>
+                <!-- <attribute name="Class-Path" value="bootstrap.jar" /> -->
+            </manifest>
+        </jar>
+    </target>
+
+    <!--
+      Bootstrap Jars. 
+      Each bootstrap jar contains the bootstrap.* package
+      but each has a different startup class 
+	  -->
+    <target name="bootjar">
+
+        <mkdir dir="${comp.dist}/lib" />
+
+        <jar jarfile="${comp.dist}/lib/${jarname}" basedir="${comp.build.bootstrap}" includes="${comp.package.dir}/bootstrap/*.class">
+
+            <!-- define MANIFEST.MF -->
+            <manifest>
+                <attribute name="Built-By" value="${user.name}" />
+                <attribute name="Main-Class" value="${mainclass}" />
+                <section name="common">
+                    <attribute name="Specification-Title" value="${name}" />
+                    <attribute name="Specification-Version" value="${project.version}" />
+                    <attribute name="Specification-Vendor" value="www.eScienceCenter.nl" />
+                    <attribute name="Implementation-Title" value="${comp.artefactId}" />
+                    <attribute name="Implementation-Version" value="${comp.version} ${TODAY}" />
+                    <attribute name="Implementation-Vendor" value="www.eScienceCenter.nl" />
+                </section>
+
+                <!-- <attribute name="Class-Path" value="bootstrap.jar" /> -->
+            </manifest>
+        </jar>
+    </target>
+
+    <!-- 
+           build bootstrap jar which are autoexecutable and start a functional application 
+        	-->
+    <target name="bootstrap" depends="build">
+
+        <antcall target="bootjar">
+            <param name="jarname" value="escxnat.jar" />
+            <param name="mainclass" value="${comp.package.prefix}.bootstrap.startXnatToolMain" />
+            <param name="name" value="eScience XNAT Tool" />
+        </antcall>
+
+    </target>
+
+    <target name="dist" depends="build,jar,bootstrap">
+
+        <property name="project.tstamp" value="now" />
+
+        <filterset id="compfilters">
+            <!-- nifty:  ant filterset (keyword subtitution) while copying files ! -->
+            <filter token="COMP_VERSION" value="${comp.version}" />
+            <filter token="PROJECT_VERSION" value="${project.version}" />
+            <filter token="PROJECT_DATE" value="${project.tstamp}" />
+        </filterset>
+
+        <copy todir="${comp.dist}/etc" verbose="true">
+            <fileset dir="etc/" excludes="**/*.sh,**/cacerts">
+            </fileset>
+        </copy>
+
+
+    </target>
+
+    <target name="test" depends="build-tests">
+
+        <mkdir dir="${comp.dist}/reports" />
+        <mkdir dir="${comp.dist}/reports/jacoco" />
+
+        <jacoco:coverage destfile="dist/reports/jacoco/jacoco.exec">
+            <junit printsummary="yes" fork="yes">
+                <classpath refid="test.classpath" />
+                <batchtest fork="yes" todir="dist/reports">
+                    <formatter type="xml" />
+                    <formatter type="plain" />
+                    <fileset dir="testsrc">
+                        <exclude name="**/integration/*.java" />
+                        <exclude name="**/ui/*.java" />
+                        <include name="nl/esciencecenter/**/Test*.java" />
+                        <include name="nl/esciencecenter/**/*Test.java" />
+                        <include name="nl/esciencecenter/**/*TestCase.java" />
+
+                    </fileset>
+                </batchtest>
+            </junit>
+
+        </jacoco:coverage>
+        <jacoco:report>
+            <executiondata>
+                <file file="dist/reports/jacoco/jacoco.exec" />
+            </executiondata>
+            <structure name="nlesc-platinum">
+                <sourcefiles>
+                    <fileset dir="${comp.src}" />
+                </sourcefiles>
+                <classfiles>
+                    <fileset dir="${comp.build.classes}" />
+                </classfiles>
+            </structure>
+            <html destdir="dist/reports/jacoco" />
+            <xml destfile="dist/reports/jacoco/coverage.xml" />
+        </jacoco:report>
+
+    </target>
+
+    <!--
+        *    Target: dist-install
+        -->
+    <target name="dist-auxlibs-install" depends="dist" description="install libraries">
+
+        <!-- all auxlibs -->
+        <mkdir dir="${project.dist.lib}" />
+        <copy todir="${project.dist.lib}">
+            <fileset dir="${comp.lib}" />
+        </copy>
+
+        <!-- platinum libs -->
+        <mkdir dir="${project.dist.lib}/platinum" />
+        <copy todir="${project.dist.lib}/platinum">
+            <fileset dir="${platinum.install.lib}">
+                <exclude name="icons" />
+            </fileset>
+            <fileset file="${platinum.install}/NOTICE.txt" />
+            <fileset file="${platinum.install}/LICENSE.txt" />
+        </copy>
+
+        <copy todir="${project.dist.lib}/platinum/notices">
+            <fileset dir="${platinum.install}/notices" />
+        </copy>
+
+        <!-- platinum icons -->
+        <mkdir dir="${project.dist.lib}/icons" />
+        <copy todir="${project.dist.lib}/icons">
+            <fileset dir="${platinum.install.lib}/icons">
+            </fileset>
+        </copy>
+
+    </target>
+
+    <!--
+    *    Target: dist-install
+    -->
+    <target name="dist-install" depends="dist,dist-auxlibs-install" description="install libraries">
+
+        <fail message="*** Error: property 'project.root' not defined. Please start with '-Dproject.root=&lt;path&gt;' argument. " unless="project.env.ok" />
+
+        <mkdir dir="${project.dist.doc}" />
+
+        <!-- toplevel directory structure -->
+        <mkdir dir="${project.dist.lib}" />
+        <mkdir dir="${project.dist.bin}" />
+        <mkdir dir="${project.dist.lib}" />
+
+        <copy todir="${project.dist.lib}">
+            <fileset dir="${comp.dist}/lib" />
+        </copy>
+
+        <!-- etc -->
+
+        <copy todir="${project.dist}/">
+            <fileset dir="${comp.root}/root" />
+            <filterset refid="compfilters" />
+        </copy>
+
+        <!-- copy escxnat.exe and escxnat.jar -->
+        <copy todir="${project.dist}/">
+            <!-- Windows bootstrapper exe -->
+            <fileset file="${comp.root}/bin/escxnat.exe" />
+            <fileset file="${comp.root}/bin/escxnatXP.exe" />
+            <fileset file="${comp.root}/bin/escxnat64.exe" />
+            <!-- Actual Startup jar -->
+            <fileset file="${comp.dist}/lib/escxnat.jar" />
+        </copy>
+
+        <mkdir dir="${project.dist.lib}/icons" />
+        <copy todir="${project.dist.lib}/icons">
+            <fileset dir="${comp.root}/icons" />
+        </copy>
+
+
+        <mkdir dir="${project.dist.etc}" />
+        <mkdir dir="${project.dist.etc}/dicom" />
+
+        <copy todir="${project.dist.etc}/dicom">
+            <fileset file="${comp.dist}/etc/dicom/dicom_tags.xcsv">
+            </fileset>
+        </copy>
+
+        <!-- custom cacerts file -->
+        <copy todir="${project.dist.etc}/">
+            <fileset file="${comp.root}/etc/cacerts">
+            </fileset>
+        </copy>
+
+        <!-- use filters! -->
+        <copy todir="${project.dist.etc}/">
+            <fileset file="${comp.dist}/etc/escxnat_properties.prop" />
+            <filterset refid="compfilters" />
+        </copy>
+
+        <!--doc-->
+        <!-- 
+		<mkdir dir="${project.dist}/doc" />
+		<copy todir="${project.dist}/doc">
+			<fileset dir="${comp.dist}/doc" />
+		</copy>
+	    -->
+
+        <!-- unfiltered binaries -->
+        <mkdir dir="${project.dist.bin}" />
+        <copy todir="${project.dist.bin}">
+            <fileset dir="${comp.root}/bin">
+                <include name="*.exe" />
+            </fileset>
+        </copy>
+
+        <!-- filtered scripts -->
+        <copy todir="${project.dist.bin}" verbose="true">
+            <fileset dir="${comp.root}/bin">
+                <include name="*.bat" />
+                <include name="*.sh" />
+            </fileset>
+            <filterset refid="compfilters" />
+        </copy>
+
+        <!-- update permissions on previous file set  -->
+        <chmod perm="ugo+x">
+            <fileset dir="${project.dist.bin}">
+                <include name="*.exe" />
+                <include name="*.sh" />
+            </fileset>
+        </chmod>
+
+    </target>
+
+    <target name="clean" description="clean">
+        <delete dir="${comp.dist}" />
+        <delete dir="${comp.build}" />
+    </target>
+
+</project>
+
+

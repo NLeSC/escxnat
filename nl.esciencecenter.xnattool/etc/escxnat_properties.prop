@@ -1,0 +1,7 @@
+###
+# Installation Properties. 
+# 
+
+
+# distribution version number
+escxnat.version=@PROJECT_VERSION@

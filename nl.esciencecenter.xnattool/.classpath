@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="testsrc"/>
+	<classpathentry kind="src" path="icons"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry exported="true" kind="lib" path="etc"/>
+	<classpathentry exported="true" kind="lib" path="lib/dicom/slf4j-api-1.6.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/dicom/slf4j-log4j12-1.6.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson/jackson-annotations-2.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson/jackson-core-2.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson/jackson-databind-2.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson/jackson-dataformat-csv-2.1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson/jackson-dataformat-xml-2.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jackson/stax2-api-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/xnat/log4j-1.2.15.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/dicom/dcm4che-core-2.0.28.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="/nl.esciencecenter.ptk"/>
+	<classpathentry kind="src" path="/nl.esciencecenter.ptk.web"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nl.esciencecenter.ptk.ui"/>
+	<classpathentry kind="output" path="build/eclipse"/>
+</classpath>

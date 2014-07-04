@@ -1,0 +1,22 @@
+#Extended CSV: Extra comments. 
+subject.label;session.label;session.age;session.date;session.mmse
+# data: 
+patient1;session101;40;01-07-1995;25
+patient1;session102;45;02-07-2000;24
+patient1;session103;50;03-07-2005;23
+patient1;session104;55;04-07-2010;20
+patient2;session201;50;01-08-1995;25
+patient2;session202;55;02-08-2000;25
+patient2;session203;60;03-08-2005;25
+patient2;session204;65;04-08-2010;24
+#Mid data comments 
+patient3;session311;80;01-09-1995;19
+patient3;session312;85;02-09-2000;18
+patient3;session313;90;03-09-2005;15
+patient3;session314;95;04-09-2010;11
+patient4;session311;75;01-10-1995;15
+patient4;session312;80;02-10-2000;14
+patient4;session313;85;03-10-2005;13
+patient4;session314;90;04-10-2010;12
+# ^Empty line.
+## End comments. 
