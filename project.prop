@@ -25,7 +25,7 @@ project.dist.doc=${project.dist}/doc
 project.env.ok=ok; 
 
 #
-platinum.install=${project.root}/../../Platinum/dist
+platinum.install=${project.root}/../Platinum/dist
 escxnat.version=1.0.0
 project.version=${escxnat.version}
 
