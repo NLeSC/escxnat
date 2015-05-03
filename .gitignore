@@ -1,9 +1,7 @@
 /dist
-/packs
-*.pyc
-*.swp
-*.cmake
-*.class
-*~
-*.tmp
-*.log
+/build
+/target
+/target/
+.settings
+.project
+.classpath

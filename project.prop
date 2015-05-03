@@ -26,7 +26,7 @@ project.env.ok=ok;
 
 #
 platinum.install=${project.root}/../Platinum/dist
-escxnat.version=1.0.0
+escxnat.version=1.0.1
 project.version=${escxnat.version}
 
 ###

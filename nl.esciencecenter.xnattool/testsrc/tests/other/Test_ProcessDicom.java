@@ -12,10 +12,10 @@ import org.junit.Test;
 
 public class Test_ProcessDicom
 {
-    @Test
+
     public void testProcessDicom() throws Exception
     {
-        java.net.URL dcmUrl = this.getClass().getClassLoader().getResource("tests/data/test_dicom1.dcm");
+        java.net.URL dcmUrl = this.getClass().getResource("/tests/data/test_dicom1.dcm");
         testProcess(dcmUrl.getPath());
     }
 

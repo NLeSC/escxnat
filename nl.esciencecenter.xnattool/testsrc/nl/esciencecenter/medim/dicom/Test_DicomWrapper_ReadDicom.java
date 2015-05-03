@@ -8,7 +8,6 @@ import org.junit.Test;
 public class Test_DicomWrapper_ReadDicom
 {
 
-    @Test
     public void test_read_dicom1() throws IOException
     {
         java.net.URL dcmUrl = this.getClass().getClassLoader().getResource("tests/data/test_dicom1.dcm");

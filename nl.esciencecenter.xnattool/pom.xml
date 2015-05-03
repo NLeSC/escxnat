@@ -1,0 +1,120 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>nl.esciencecenter.escxnat</groupId>
+	<artifactId>escxnat-core</artifactId>
+	<packaging>jar</packaging>
+	<name>eScience XNAT Toolkit</name>
+	<version>1.0.1-SNAPSHOT</version>
+
+	<properties>
+		<ptk.version>1.1.0-SNAPSHOT</ptk.version>
+		<junit.version>4.12</junit.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>www.dcm4che.org</id>
+			<name>dcm4che Repository</name>
+			<url>http://www.dcm4che.org/maven2</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<!-- ptk -->
+		<dependency>
+			<groupId>nl.esciencecenter.platinum</groupId>
+			<artifactId>ptk-core</artifactId>
+			<version>${ptk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>nl.esciencecenter.platinum</groupId>
+			<artifactId>ptk-ui</artifactId>
+			<version>${ptk.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>nl.esciencecenter.platinum</groupId>
+			<artifactId>ptk-web</artifactId>
+			<version>${ptk.version}</version>
+		</dependency>
+		<!-- EXT -->
+		<dependency>
+			<groupId>dcm4che</groupId>
+			<artifactId>dcm4che-core</artifactId>
+			<version>2.0.28</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-csv</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.woodstox</groupId>
+			<artifactId>woodstox-core-asl</artifactId>
+			<version>4.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<scriptSourceDirectory>bin</scriptSourceDirectory>
+		<testSourceDirectory>testsrc</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>etc</directory>
+			</resource>
+			<resource>
+				<directory>icons</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+				<version>3.1</version>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

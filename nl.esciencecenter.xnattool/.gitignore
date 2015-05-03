@@ -1,2 +1,7 @@
 /dist
 /build
+/target
+/target/
+.settings
+.project
+.classpath
